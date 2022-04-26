@@ -1,7 +1,6 @@
 import pandas as pd, requests
 from numbers import Number
 
-from sqlalchemy import column
 from userdefined_errors import MarketError, SymbolError, OrderbookError
 
 
@@ -84,8 +83,6 @@ def get_orderbook(symbols_df, base_symbol, quote_symbol, action):
 
     if response_message[1] != 'result': 
         raise OrderbookError(response_data['error'])
-        print('orderbook request responded an error, error message:')
-        print(response_data['error']) ##error 6
 
     ## part 4, hesaplamalar
 
@@ -94,7 +91,7 @@ def get_orderbook(symbols_df, base_symbol, quote_symbol, action):
     ## orderbook ana dataframei. Sort ve asks/bids ayrımı var. Cumulative sumla işlem yapıldığı için sort sırası önemli.
     if action == 'buy':
         df = pd.DataFrame(response_data['result'].get('asks'), columns = response_column_names).sort_values(by='price', ascending=True)
-    else:
+    else:   
         df = pd.DataFrame(response_data['result'].get('bids'), columns = response_column_names).sort_values(by='price', ascending=False)
 
     ## inverse orderlar için yapılan dönüşüm
