@@ -1,5 +1,7 @@
 import pandas as pd, requests
 from numbers import Number
+
+from sqlalchemy import column
 from userdefined_errors import MarketError, SymbolError, OrderbookError
 
 
@@ -55,6 +57,7 @@ def get_orderbook(symbols_df, base_symbol, quote_symbol, action):
     Returns a dataframe and flag variable which is indicating if the quote was sent as reversed or not.
     Dataframe 
     """
+    pd.DataFrame([quote_symbol, base_symbol], columns = ['symbols']).to_csv('tmp2.csv')
 
     df1 = symbols_df['ticker'].str.contains(str(base_symbol))
     df2 = symbols_df['currency'].str.contains(str(quote_symbol))

@@ -1,33 +1,29 @@
 # import main Flask class and request object
 from flask import Flask, request, jsonify
-import json
 import bilira 
 
 # create the Flask app
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 
-@app.route('/query-example')
-def query_example():
-    return 'Query String Example'
-
-@app.route('/form-example')
-def form_example():
-    return 'Form Data Example'
+@app.route('/')
+def welcome_message():
+    return 'Welcome aboard.'
 
 @app.route('/market_order', methods=['POST'])
 def market_order():
     request_data = request.get_json()
+    request_data = {k.lower():v for k,v in request_data.items()}
 
-    action = request_data.get('Action')
-    base_currency = request_data.get('Base_currency')
-    quote_currency = request_data.get('Quote_currency')
-    amount = request_data.get('Amount')
+    action = request_data.get('action')
+    base_currency = request_data.get('base_currency')
+    quote_currency = request_data.get('quote_currency')
+    amount = request_data.get('amount')
 
-    with open('input_data.txt', 'w') as convert_file:
-        convert_file.write(json.dumps(request_data))
-    
-    order_return = bilira.market_order(action=action, base_currency=base_currency, quote_currency=quote_currency, amount=amount)
+    order_return = bilira.market_order(action=str(action).lower()
+                                        , base_currency = base_currency
+                                        , quote_currency = quote_currency
+                                        , amount = amount)
 
     return jsonify(order_return)
 
@@ -35,18 +31,16 @@ def market_order():
 @app.route('/limit_order', methods=['POST'])
 def limit_order():
     request_data = request.get_json()
+    request_data = {k.lower():v for k,v in request_data.items()}
 
-    action = request_data.get('Action')
-    base_currency = request_data.get('Base_currency')
-    quote_currency = request_data.get('Quote_currency')
-    amount = request_data.get('Amount')
-    price = request_data.get('Price')
-    icebergs = request_data.get('Number_of_iceberg_order')
+    action = request_data.get('action')
+    base_currency = request_data.get('base_currency')
+    quote_currency = request_data.get('quote_currency')
+    amount = request_data.get('amount')
+    price = request_data.get('price')
+    icebergs = request_data.get('number_of_iceberg_order')
 
-    with open('input_data.txt', 'w') as convert_file:
-        convert_file.write(json.dumps(request_data))
-
-    order_return = bilira.limit_order(action = action
+    order_return = bilira.limit_order(action = str(action).lower()
                                     , base_currency = base_currency
                                     , quote_currency = quote_currency
                                     , amount = amount
