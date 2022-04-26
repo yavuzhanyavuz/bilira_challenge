@@ -1,4 +1,4 @@
-# AFX Market place limit & market order request on local API endpoints
+# FTX Market place limit & market order request on local API endpoints
 Languages: Python >= 3.7
 
 Packages & Versions : 
